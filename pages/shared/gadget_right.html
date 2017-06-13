@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Right Gadget</title>
+    <script src="../../libs/rsvp.js"></script>
+    <script src="../../libs/renderjs.js"></script>
+    <script src="../../javascripts/gadget_global.js"></script>
+    <script src="../../javascripts/gadget_right.js"></script>
+</head>
+<body>
+<ul class="fixed-tool list-unstyled">
+    <li style="" class="share-li">
+        <div id="share-menu" class="jiathis_style_32x32"><a class="jiathis_button_weixin" title="分享到微信"><span
+                class="jiathis_txt jiathis_separator jtico jtico_weixin"><i class="fa fa-weixin"></i></span></a><a
+                class="jiathis_button_qzone" title="分享到QQ空间"><span
+                class="jiathis_txt jiathis_separator jtico jtico_qzone"><i class="fa fa-qq"></i></span></a><a
+                class="jiathis_button_tsina" title="分享到微博"><span
+                class="jiathis_txt jiathis_separator jtico jtico_tsina"><i class="fa fa-weibo"></i></span></a><a
+                class="jiathis_button_renren" title="分享到人人网"><span
+                class="jiathis_txt jiathis_separator jtico jtico_renren"><i class="fa fa-renren"></i></span></a><a
+                title="分享到" class="menu">
+            <div id="ss_toggle" data-rot="180" class="share">
+                <div class="circle"></div>
+                <div class="bar"></div>
+            </div>
+        </a></div>
+    </li>
+    <li style="" class="qr-li hidden-sm hidden-xs"><a id="qrBtn" title="二维码"><i class="fa fa-qrcode"></i></a>
+
+        <div class="qrcontain popover left animated fadeInLeft" style="top: -57px;">
+            <div class="arrow" style="top: 52%;"></div>
+            <div class="popover-content text-center">
+                <div id="qrcode">
+                </div>
+                <span>手机访问该页面</span></div>
+        </div>
+    </li>
+    <li id="scrollTop" style="" class="top-li"><a title="回顶部"><i class="fa fa-arrow-up"></i></a></li>
+</ul>
+</body>
+</html>
