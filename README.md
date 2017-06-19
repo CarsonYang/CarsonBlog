@@ -1,6 +1,7 @@
 # CarsonBlog
 
 ## Website
+It adapts to both pc mode and mobile mode.
 [http://www.maggiedodo.cn/](http://www.maggiedodo.cn/)
 
 ## Technology
