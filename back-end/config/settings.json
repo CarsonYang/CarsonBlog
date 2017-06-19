@@ -1,0 +1,10 @@
+{
+  "SiteName": "MaggieDoDo",
+  "SiteDomain": "www.maggiedodo.cn",
+  "RecordNo": "沪ICP备16021032号",
+  "LogoPath": "/images/pic1.jpg",
+  "background":"/images/background_1.jpg",
+  "PageSize": "10",
+  "CacheExpired": "300",
+  "EnableShare": "true"
+}
