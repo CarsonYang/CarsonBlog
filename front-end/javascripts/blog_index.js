@@ -285,7 +285,7 @@
                     $("#page" + index).append(itemHtml);
                 });
                 $("body").append("<script id=\"cy_cmt_num\" src=\"http://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cyrUoGjWj\"><\/script>");
-                var item = $("<li><a href=\"javascript:void(0)\" page=\"" + index + "\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"��" + index + "ҳ\"></a></li>");
+                var item = $("<li><a href=\"javascript:void(0)\" page=\"" + index + "\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"第" + index + "页\"></a></li>");
                 item.appendTo($("#page-nav"));
                 var percent = 100 / index;
                 $("#page-nav li").css("height", percent + "%");
