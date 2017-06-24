@@ -15,49 +15,50 @@
     <script src="../../libs/rsvp.js"></script>
     <script src="../../libs/renderjs.js"></script>
     <script src="../../libs/handlebars.js"></script>
+    <script src="../../libs/jio-latest.min.js"></script>
     <script src="../../javascripts/about_index.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../libs/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../libs/jQuery-cycleText/dist/js/jquery.cycleText.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../libs/jquery-qrcode/dist/jquery.qrcode.min.js" charset="utf-8"></script>
     <title></title>
     <script class="handlebars-template" type="text/x-handlebars-template">
-            <div style="background:url(../../images/background_1_about.jpg);background-size:cover;" class="row">
-                <div class="col-lg-4 col-lg-offset-4">
-                    <div class="about-block animated fadeInDown">
-                        <div class="widget-head-color-box navy-bg p-lg text-center">
-                            <div class="m-b-md"><h2 class="font-bold no-margins">{{info.FirstLine}}</h2><h4>{{info.SecondLine}}</h4></div>
-                            <img alt="profile" src="../../images/pic1.jpg" class="img-circle profile-img m-b-md animated zoomIn"><img
-                                alt="wechat" src="../../images/qrcode_wechat_1.jpg" style="display:none;"
-                                class="wechat-img m-b-md animated zoomIn"><h4><span id="job-title"><span
-                                class="cycleText animated flipInX" style="display: inline-block;">{{info.ThirdLine}}</span></span></h4></div>
-                        <div class="widget-text-box"><p>{{info.Profile}}</p>
+        <div style="background:url(../../images/background_1_about.jpg);background-size:cover;" class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <div class="about-block animated fadeInDown">
+                    <div class="widget-head-color-box navy-bg p-lg text-center">
+                        <div class="m-b-md"><h2 class="font-bold no-margins">{{info.FirstLine}}</h2><h4>{{info.SecondLine}}</h4></div>
+                        <img alt="profile" src="../../images/pic1.jpg" class="img-circle profile-img m-b-md animated zoomIn"><img
+                            alt="wechat" src="../../images/qrcode_wechat_1.jpg" style="display:none;"
+                            class="wechat-img m-b-md animated zoomIn"><h4><span id="job-title"><span
+                            class="cycleText animated flipInX" style="display: inline-block;">{{info.ThirdLine}}</span></span></h4></div>
+                    <div class="widget-text-box"><p>{{info.Profile}}</p>
 
-                            <div class="row">
-                                <div class="col-md-6"><i title="微信" class="fa fa-wechat"></i><br>{{info.Wechat}}<i
-                                        title="二维码" class="fa fa-lg fa-qrcode"></i></div>
-                                <div class="col-md-6"><i title="邮箱" class="fa fa-envelope"></i>{{info.Email}}</div>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-6"><i title="微信" class="fa fa-wechat"></i><br>{{info.Wechat}}<i
+                                    title="二维码" class="fa fa-lg fa-qrcode"></i></div>
+                            <div class="col-md-6"><i title="邮箱" class="fa fa-envelope"></i>{{info.Email}}</div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </script>
 </head>
 <body class="fuelux">
-    <div data-gadget-url="../shared/gadget_top.html"
+<div data-gadget-url="../shared/gadget_top.html"
      data-gadget-scope="top_gadget"
      data-gadget-sandbox="public" ></div>
 
-    <div class="container-fluid detail-container">
-        <div class="handlebars-anchor"></div>
-        <div data-gadget-url="../shared/gadget_footer.html"
-             data-gadget-scope="footer_gadget"
-             data-gadget-sandbox="public" ></div>
-    </div>
-
-    <div data-gadget-url="../shared/gadget_right.html"
-         data-gadget-scope="right_gadget"
+<div class="container-fluid detail-container">
+    <div class="handlebars-anchor"></div>
+    <div data-gadget-url="../shared/gadget_footer.html"
+         data-gadget-scope="footer_gadget"
          data-gadget-sandbox="public" ></div>
+</div>
+
+<div data-gadget-url="../shared/gadget_right.html"
+     data-gadget-scope="right_gadget"
+     data-gadget-sandbox="public" ></div>
 
 </body>
 </html>

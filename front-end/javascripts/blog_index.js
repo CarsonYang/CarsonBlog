@@ -1,13 +1,17 @@
 /**
  * Created by NUC on 2017/6/11.
  */
-/*global window, document, navigator, rJS, Handlebars*/
-(function (window, document, navigator, rJS, Handlebars) {
+/*global window, document, navigator, rJS, Handlebars,jIO,$*/
+(function (window, document, navigator, rJS, Handlebars,jIO,$) {
     "use strict";
 
     /* Global Variables */
 
-     var handlebars_template;
+    var handlebars_template,
+        storage,
+        listInfo,
+        listInfoId = "list",
+        listInfoDefault = {"Source":"0","Alias":"Korean","Title":"M&C around the world- Korean Impression Part 1","Url":"","PublishDate":"2017-06-17","Host":"","Summary":"Korean style","ViewCount":27,"CategoryAlias":"Travel","CateName":"旅行"};
 
     /* Initialization */
 
@@ -28,6 +32,7 @@
 
         .declareService(function () {
             var gadget = this;
+            storage = jIO.createJIO({"type": "indexeddb", "database": "blog"});
             handlebars_template = Handlebars.compile(
                 document.head.querySelector(".handlebars-template").innerHTML
             );
@@ -203,6 +208,7 @@
 
         .declareMethod("requestData", function () {
             var gadget = this;
+            gadget.put(listInfoId,listInfoDefault);
             $.ajax({
                 url: $('#filterForm')[0].action,
                 type: $('#filterForm')[0].method,
@@ -211,14 +217,19 @@
                     var end = new Date();
                     var data = result.posts;
                     pageCount = result.pageCount;
+                    gadget.put(listInfoId,data);
                     if (end - begin > timeout) {
-                        gadget.addPage($("#PageIndex").val(), data);
+                        gadget.get(listInfoId);
                     } else {
                         var timespan = timeout - (end - begin);
                         setTimeout(function () {
-                            gadget.addPage($("#PageIndex").val(), data);
+                            gadget.get(listInfoId);
                         }, timespan);
                     }
+                },
+                fail: function(error){
+                    console.log(error);
+                    gadget.get(listInfoId);
                 }
             });
         })
@@ -371,4 +382,26 @@
             gadget.requestData();
         })
 
-}(window, document, navigator, rJS, Handlebars));
+        .declareMethod("put", function (id,message) {
+            return storage.put(id, message)
+                .push(function (result) {
+                    console.log(result);
+                })
+                .push(undefined, function (error) {
+                    console.log(error);
+                });
+        })
+        .declareMethod("get", function (id) {
+            var gadget = this;
+            return storage.get(id)
+                .push(function (result) {
+                    console.log(result);
+                    listInfo = result;
+                    gadget.addPage($("#PageIndex").val(), listInfo);
+                })
+                .push(undefined, function (error) {
+                    console.log(error);
+                });
+        })
+
+}(window, document, navigator, rJS, Handlebars,jIO,$));
