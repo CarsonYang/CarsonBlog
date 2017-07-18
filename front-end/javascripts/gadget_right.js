@@ -1,10 +1,4 @@
-/**
- * Created by NUC on 2017/5/29.
- */
 (function (window, document, rJS, RSVP) {
-
-    var url = "http://www.maggiedodo.cn:9999/about_new";
-    var aboutInfo = null;
 
     rJS(window)
 
@@ -63,25 +57,18 @@
             var img = document.createElement("img");
             return new RSVP.Queue()
                 .push(function () {
-                    $.ajax({
-                        url: url,
-                        type: "GET",
-                        success: function(result){
-                            aboutInfo = result;
-                            img.src = aboutInfo.websiteImage;
-                            img.onload = function () {
-                                $("#qrcode").qrcode({
-                                    text: window.location.href,
-                                    size: "100",
-                                    ecLevel: 'L',
-                                    minVersion: 4,
-                                    mode: 4,
-                                    image: img,
-                                    mSize: 0.3
-                                });
-                            };
-                        }
-                    });
+                    img.src = "../../images/pic1.jpg";
+                    img.onload = function () {
+                        $("#qrcode").qrcode({
+                            text: window.location.href,
+                            size: "100",
+                            ecLevel: 'L',
+                            minVersion: 4,
+                            mode: 4,
+                            image: img,
+                            mSize: 0.3
+                        });
+                    };
                 })
                 .push(function () {
                     return loopEventListener(

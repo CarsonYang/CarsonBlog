@@ -1,5 +1,4 @@
 /*global window, RSVP, FileReader */
-/*jslint indent: 2, maxerr: 3, unparam: true */
 (function (window, RSVP, FileReader) {
   "use strict";
 
@@ -10,7 +9,7 @@
     // eventListener is removed when promise is cancelled/rejected
     //////////////////////////
     var handle_event_callback,
-      callback_promise;
+        callback_promise;
 
     function cancelResolver() {
       if ((callback_promise !== undefined) &&
@@ -34,15 +33,15 @@
         }
         cancelResolver();
         callback_promise = new RSVP.Queue()
-          .push(function () {
-            return callback(evt);
-          })
-          .push(undefined, function (error) {
-            if (!(error instanceof RSVP.CancellationError)) {
-              canceller();
-              reject(error);
-            }
-          });
+            .push(function () {
+              return callback(evt);
+            })
+            .push(undefined, function (error) {
+              if (!(error instanceof RSVP.CancellationError)) {
+                canceller();
+                reject(error);
+              }
+            });
       };
 
       target.addEventListener(type, handle_event_callback, useCapture);

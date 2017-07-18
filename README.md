@@ -14,6 +14,7 @@ Front-end folder includes client-end program which uses officejs_todomvc front-e
 Nginx folder only includes a nginx.conf file which can config nginx http server. The nginx is very import,because the front-end program and back-end program is separated by the nginx which is a http server.
     That is to say,the front-end program is just for browser's view and it get json data through nginx.The nginx rewrite the http request to the back-end program and the back-end program get information from
     MongoDB or the file system.
+    ServiceWorker should be used by https.
 
 
 ## Contact

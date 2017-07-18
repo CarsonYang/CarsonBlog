@@ -1,6 +1,3 @@
-/**
- * Created by NUC on 2017/6/7.
- */
 /*global window, document, navigator, rJS, Handlebars,jIO,$*/
 (function (window, document, navigator, rJS, Handlebars,jIO,$) {
     "use strict";
@@ -9,18 +6,6 @@
 
     var ENTER_KEY = 13,
         ESCAPE_KEY = 27,
-        aboutInfoDefault = {
-            "FirstLine": "",
-            "SecondLine": "",
-            "PhotoPath": "",
-            "ThirdLine": "",
-            "Profile": "",
-            "Wechat": "",
-            "QrcodePath": "",
-            "websiteImage":"",
-            "Email": ""
-        },
-
 
     /* Global Variables */
 
@@ -29,14 +14,19 @@
         storageInfo,
         storageInfoID = "about";
 
-    var url = "http://www.maggiedodo.cn:9999/about_new";
-    var aboutInfo = aboutInfoDefault;
+
+    if (navigator.serviceWorker) {
+        navigator.serviceWorker.register("../../serviceworker.js");
+    }
+
+    var url = "https://www.maggiedodo.cn/about_new";
+    var aboutInfo = null;
 
     $.ajax({
         url: url,
         type: "GET",
         success: function(result){
-            aboutInfo = result || aboutInfoDefault;
+            aboutInfo = result;
         },
         fail: function(error){
             console.log(error);
@@ -55,12 +45,24 @@
             var gadget = this,
                 div = document.createElement("div");
             storage = jIO.createJIO({"type": "indexeddb", "database": "about"});
-            gadget.put(storageInfoID,aboutInfo);
-            gadget.get(storageInfoID);
-            gadget.element.appendChild(div);
-            handlebars_template = Handlebars.compile(
-                document.head.querySelector(".handlebars-template").innerHTML
-            );
+            gadget.get(storageInfoID).push(function(){
+                if(!storageInfo){
+                    gadget.put(storageInfoID,aboutInfo).push(function(){
+                        gadget.get(storageInfoID).push(function(){
+                            gadget.element.appendChild(div);
+                            handlebars_template = Handlebars.compile(
+                                document.head.querySelector(".handlebars-template").innerHTML
+                            );
+                        });
+                    });
+                }else{
+                    gadget.element.appendChild(div);
+                    handlebars_template = Handlebars.compile(
+                        document.head.querySelector(".handlebars-template").innerHTML
+                    );
+                }
+            });
+
         })
 
         .declareMethod("put", function (id,message) {
@@ -80,6 +82,7 @@
                 })
                 .push(undefined, function (error) {
                     console.log(error);
+                    storageInfo = null;
                 });
         })
 

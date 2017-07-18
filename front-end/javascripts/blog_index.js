@@ -1,6 +1,3 @@
-/**
- * Created by NUC on 2017/6/11.
- */
 /*global window, document, navigator, rJS, Handlebars,jIO,$*/
 (function (window, document, navigator, rJS, Handlebars,jIO,$) {
     "use strict";
@@ -10,8 +7,7 @@
     var handlebars_template,
         storage,
         listInfo,
-        listInfoId = "list",
-        listInfoDefault = {"Source":"0","Alias":"Korean","Title":"M&C around the world- Korean Impression Part 1","Url":"","PublishDate":"2017-06-17","Host":"","Summary":"Korean style","ViewCount":27,"CategoryAlias":"Travel","CateName":"旅行"};
+        listInfoId = "list";
 
     /* Initialization */
 
@@ -21,8 +17,13 @@
     var contentTimeout = 1500;
     var begin = new Date();
     var contentBegin = new Date();
-    var pageCount;
+    var pageCount = 1;
     var tooltip_timeout = 1500;
+    var networkErr = false;
+
+    if (navigator.serviceWorker) {
+        navigator.serviceWorker.register("serviceworker.js");
+    }
 
     rJS(window)
 
@@ -73,7 +74,7 @@
                     $("#load-list").show();
                     isLoading = true;
                     $("#PageIndex").val(parseInt($("#PageIndex").val()) + 1);
-                    requestData();
+                    gadget.requestData();
                 }
             }, "#btn-load");
 
@@ -166,10 +167,6 @@
                 setTimeout(gadget.closeModal, 800);
             });
 
-            $(".input-group-btn").on("click",function(){
-                //gadget.searchPost();
-            });
-
             $("a[sort='date']").on("click",function(){
                 if (!$(this).hasClass("current")) {
                     $(event.target).addClass("current").siblings().removeClass("current");
@@ -208,28 +205,40 @@
 
         .declareMethod("requestData", function () {
             var gadget = this;
-            gadget.put(listInfoId,listInfoDefault);
             $.ajax({
                 url: $('#filterForm')[0].action,
                 type: $('#filterForm')[0].method,
                 data: $('#filterForm').serialize(),
                 success: function (result) {
+                    networkErr = false;
                     var end = new Date();
                     var data = result.posts;
                     pageCount = result.pageCount;
                     gadget.put(listInfoId,data);
                     if (end - begin > timeout) {
-                        gadget.get(listInfoId);
+                        gadget.get(listInfoId).push(function(){
+                            gadget.addPage($("#PageIndex").val(), listInfo);
+                        });
                     } else {
                         var timespan = timeout - (end - begin);
                         setTimeout(function () {
-                            gadget.get(listInfoId);
+                            gadget.get(listInfoId).push(function(){
+                                gadget.addPage($("#PageIndex").val(), listInfo);
+                            });
                         }, timespan);
                     }
                 },
                 fail: function(error){
                     console.log(error);
-                    gadget.get(listInfoId);
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    networkErr = true;
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                    gadget.get(listInfoId).push(function(){
+                        gadget.addPage($("#PageIndex").val(), listInfo);
+                    });
                 }
             });
         })
@@ -283,19 +292,29 @@
                             + "<\/div>"
                             + "<div class=\"hr-line-dashed\"></div>";
                     } else {
-                        itemHtml = "<div class='blog-item' uid='"+ value.Alias +"'>" +
-                            "<a class='preview-link' title='点击预览'></a>" +
-                            "<h4><a href='http://www.maggiedodo.cn/blog/"+value.CategoryAlias+"/"+value.Alias+"' title='"+value.Title+"' target='_blank'>"+ value.Title +"</a></h4>" +
-                            "<span title='文章分类'><i class='fa fa-map-signs'></i> <a href='/blog/"+value.CategoryAlias+"' target='_blank'>"+value.CateName+"</a></span> " +
-                            "<span class='margin-left-20' title='发布时间'><i class='fa fa-clock-o'></i>" +value.PublishDate+"</span>" +
-                            "<div class='clearfix'></div>" +
-                            "<p>" +value.Summary+"</p>" +
-                            "</div>" +
-                            "<div class='hr-line-dashed'></div>";
+                        if(networkErr){
+                            itemHtml = "<div class='blog-item' uid='"+ value.Alias +"'>" +
+                                "<h4><a title='"+value.Title+"' target='_blank'>"+ value.Title +"</a></h4>" +
+                                "<span title='文章分类'><i class='fa fa-map-signs'></i> <a href='/blog/"+value.CategoryAlias+"' target='_blank'>"+value.CateName+"</a></span> " +
+                                "<span class='margin-left-20' title='发布时间'><i class='fa fa-clock-o'></i>" +value.PublishDate+"</span>" +
+                                "<div class='clearfix'></div>" +
+                                "<p>" +value.Summary+"</p>" +
+                                "</div>" +
+                                "<div class='hr-line-dashed'></div>";
+                        }else{
+                            itemHtml = "<div class='blog-item' uid='"+ value.Alias +"'>" +
+                                "<a class='preview-link' title='点击预览'></a>" +
+                                "<h4><a href='http://www.maggiedodo.cn/blog/"+value.CategoryAlias+"/"+value.Alias+"' title='"+value.Title+"' target='_blank'>"+ value.Title +"</a></h4>" +
+                                "<span title='文章分类'><i class='fa fa-map-signs'></i> <a href='/blog/"+value.CategoryAlias+"' target='_blank'>"+value.CateName+"</a></span> " +
+                                "<span class='margin-left-20' title='发布时间'><i class='fa fa-clock-o'></i>" +value.PublishDate+"</span>" +
+                                "<div class='clearfix'></div>" +
+                                "<p>" +value.Summary+"</p>" +
+                                "</div>" +
+                                "<div class='hr-line-dashed'></div>";
+                        }
                     }
                     $("#page" + index).append(itemHtml);
                 });
-                $("body").append("<script id=\"cy_cmt_num\" src=\"http://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cyrUoGjWj\"><\/script>");
                 var item = $("<li><a href=\"javascript:void(0)\" page=\"" + index + "\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"第" + index + "页\"></a></li>");
                 item.appendTo($("#page-nav"));
                 var percent = 100 / index;
@@ -397,7 +416,6 @@
                 .push(function (result) {
                     console.log(result);
                     listInfo = result;
-                    gadget.addPage($("#PageIndex").val(), listInfo);
                 })
                 .push(undefined, function (error) {
                     console.log(error);
